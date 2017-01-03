@@ -25,9 +25,9 @@
         use: [-le is less than or equal to]
   roles:
     - ../gentoo.package-meta
-  # tasks:
-  #   - name: Remove test metadata
-  #     shell: >
-  #       find /etc/portage/ -type f -name '*{{ prefix }}*' 
-  #       | xargs -n 1 rm | true
-  #     changed_when: false
+  tasks:
+    - name: Remove test metadata
+      shell: >
+        find /etc/portage/ -type f -name '*{{ prefix }}*' 
+        | xargs -n 1 rm | true
+      changed_when: false

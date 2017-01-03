@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    prefix: someprefix
+    packages:
+      - name: "{{ prefix }}test/package"
+        keywords: [keyword1, keyword2]
+        use: [use1, use2]
+        env:
+          - 'MAKEOPTS="-j1"'
+          - 'USE="test"'
+      - name: "={{ prefix }}test/package-1"
+        use: [-eq, is, equal, to]
+        mask:
+      - name: ">{{ prefix }}test/package-2"
+        use: [-gt is greater than]
+        mask: [">{{ prefix }}test/package-2.1"]
+      - name: ">={{ prefix }}test/package-3"
+        use: [-ge is greater than or equal to]
+        unmask:
+      - name: "<={{ prefix }}test/package-4"
+        use: [-lt is less than]
+      - name: "<{{ prefix }}test/package-5"
+        use: [-le is less than or equal to]
+  roles:
+    - ../gentoo.package-meta
+  # tasks:
+  #   - name: Remove test metadata
+  #     shell: >
+  #       find /etc/portage/ -type f -name '*{{ prefix }}*' 
+  #       | xargs -n 1 rm | true
+  #     changed_when: false

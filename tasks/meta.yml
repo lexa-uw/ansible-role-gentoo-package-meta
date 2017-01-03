@@ -1,0 +1,19 @@
+# vim:ft=yaml
+---
+  # -eq is equal to 
+  # -gt is greater than 
+  # -ge is greater than or equal to 
+  # -lt is less than 
+  # -le is less than or equal to 
+
+  - name: "{{ path }}/{{ name }}"
+    copy:
+      content: "{{ content }}"
+      dest: "{{ path }}/{{ name  
+          | regex_replace('^=(.*)$' , '\\1__eq') 
+          | regex_replace('^>=(.*)$', '\\1__ge') 
+          | regex_replace('^>(.*)$' , '\\1__gt') 
+          | regex_replace('^<=(.*)$', '\\1__le') 
+          | regex_replace('^<(.*)$' , '\\1__lt') 
+          | replace('/', '__') 
+        }}" 

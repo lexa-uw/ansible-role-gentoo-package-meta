@@ -1,0 +1,53 @@
+# vim:ft=yaml
+---
+  - include: "meta.yml"
+    with_items: "{{ packages }}"
+    when: item.use is defined  
+    vars:
+      path: /etc/portage/package.use
+      name: "{{ item.name }}"
+      content: "{{ item.name }} {{ item.use | join(' ') }}"
+
+  - include: "meta.yml"
+    with_items: "{{ packages }}"
+    when: item.keywords is defined  
+    vars:
+      path: /etc/portage/package.keywords
+      name: "{{ item.name }}"
+      content: "{{ item.name }} {{ item.keywords | join(' ') }}"
+
+  - include: "meta.yml"
+    with_items: "{{ packages }}"
+    when: item.mask is defined  
+    vars:
+      path: /etc/portage/package.mask
+      name: "{{ item.name }}"
+      content: "{% if item.mask %}{{ item.mask | join('\n') }}{% else %}{{ item.name }}{% endif %}"
+
+  - include: "meta.yml"
+    with_items: "{{ packages }}"
+    when: item.unmask is defined  
+    vars:
+      path: /etc/portage/package.unmask
+      name: "{{ item.name }}"
+      content: "{% if item.unmask %}{{ item.unmask | join('\n') }}{% else %}{{ item.name }}{% endif %}"
+
+  - name: Env package ensure file exists
+    file:
+      path: "{{path}}/{{item.name.split('/')[0]}}" 
+      recurse: yes
+      state: directory
+    with_items: "{{ packages }}"
+    when: item.env is defined  
+    vars:
+      path: /etc/portage/env
+
+  - name: Env package
+    copy:
+      content: "{{ item.env | join(\"\n\") }}"
+      dest: "{{path}}/{{item.name}}"
+    with_items: "{{ packages }}"
+    when: item.env is defined  
+    vars:
+      path: /etc/portage/env
+

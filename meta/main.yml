@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Lexa
+  description: Role for adding meta info(env/use/keywords/mask/unmusk) for package.
+  company: Freelance
+
+  issue_tracker_url: http://example.com/issue/tracker
+
+  license: BSD
+
+  min_ansible_version: 1.2
+
+  platforms:
+  - name: Gentoo
+    versions:
+      - all
+
+  galaxy_tags: ["portage", "package", "mask", "unmask", "keywords", "gentoo"]
+
+dependencies: []
